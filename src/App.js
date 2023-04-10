@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import openai from 'openai';
+import {Configuration, OpenAIApi} from 'openai'
+const Chat = () => {
+  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState([]);
 
-function App() {
+
+  const openaiAPI = new OpenAIApi(
+    new Configuration({
+      apiKey: "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",
+    })
+  )
+  
+  
+  const handleInput = (event) => {
+    setInput(event.target.value);
+  };
+
+  const sendMessage = async (event) => {
+    event.preventDefault();
+    setMessages([...messages, { text: input, sender: 'user' }]);
+    setInput('');
+  
+    const response = await openaiAPI.createChatCompletion({
+      model: "gpt-3.5-turbo",
+  
+      messages: [{ role: "user", content:input}],        
+    })
+    console.log(response.data.choices[0].message.content)
+   
+    setMessages([...messages, { text: response.data.choices[0].message.content ,sender: 'bot' }]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ul>
+        {messages.map((message) => (
+          <li>
+            <strong>{message.sender}:</strong> {message.text}
+          </li>
+        ))}
+      </ul>
+      <form onSubmit={sendMessage}>
+        <input type="text" value={input} onChange={handleInput} />
+        <button type="submit"></button>
+      </form>
     </div>
   );
-}
+};
 
-export default App;
+export default Chat;
