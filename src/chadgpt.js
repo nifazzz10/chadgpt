@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Configuration, OpenAIApi} from 'openai'
 import './App.css'
-import YourSvg from './🗿 (1).svg'
+import YourSvg from './🗿 (2).svg'
 const Chad = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
