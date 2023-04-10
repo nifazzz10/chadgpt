@@ -6,17 +6,23 @@ const Chad = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   
+  const [loading, setLoading] = useState(false);
+
+  
+
   const handleInput = (event) => {
     setInput(event.target.value);
   };
   const openaiAPI = new OpenAIApi(
     new Configuration({
-      apiKey: "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",
+      apiKey: process.env.REACT_APP_OPEN_AI_API_KEY,
     })
   )
   
   
   const sendMessage =async (event) => {
+    setLoading(true);
+ 
     event.preventDefault();
     setMessages([...messages, { text: input, sender:"👤" }]);
     setInput('');
@@ -26,8 +32,10 @@ const Chad = () => {
       })
  
       setMessages([...messages, { text: input, sender: '👤' }, { text: response.data.choices[0].message.content ,sender: '🗿' }]);
-  
+      setLoading(false);
   };
+     // fetch data here
+  
   console.log(messages)
  
   return (<>   <img src={YourSvg} alt="Your SVG"  class="center"/>
@@ -36,13 +44,17 @@ const Chad = () => {
         {messages.map((message,index) => (
           <div key={index}className={`chat-message ${message.sender === '👤' ? 'chat-message-user' : 'reply'}`}>
             <div className={`chat-message-text${message.sender === '👤' ? 'chat-message-user' : 'reply'}`}>{message.sender}  {message.text}</div>
-           
+          
           </div>
         ))}
+           
       </div>
       <form className="chat-form" onSubmit={sendMessage}>
         <input className="chat-input" type="text" value={input} onChange={handleInput} />
-        <button className="chat-button" type="submit">Send</button>
+       
+           <button  className="chat-button" type="submit">
+            {loading ? 'Loading...' : 'Send'}</button>
+           
       </form>
     </div></>
   );
