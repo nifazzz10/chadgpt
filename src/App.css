@@ -25,7 +25,9 @@
 
 .chat-message-textchat-message-user{
   background-color: #3700ff;
+  
   border-radius: 20px;
+  border-bottom-right-radius: 2px;
   color: white;
   padding: 10px 20px;
 }
@@ -33,6 +35,7 @@
 .chat-message-textreply {
   background-color: #3700ff;
   border-radius: 20px;
+  border-bottom-left-radius: 2px;
   color: white;
   padding: 10px 20px;
 }
@@ -40,6 +43,11 @@
 
 .chat-form {
   display: flex;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+border-top-left-radius:20px ;
+border-top-right-radius:20px ;
 }
 
 .chat-input {
